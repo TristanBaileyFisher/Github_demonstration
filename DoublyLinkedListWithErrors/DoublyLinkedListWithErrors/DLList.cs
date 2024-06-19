@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DoublyLinkedListWithErrors
 {
-   public class DLList
+    public class DLList
     {
         public DLLNode head; // pointer to the head of the list
         public DLLNode tail; // pointer to the tail of the list
-       public DLList() { head = null;  tail = null; } // constructor
+        public DLList() { head = null; tail = null; } // constructor
         /*-------------------------------------------------------------------
         * The methods below includes several errors. Your  task is to write
         * unit test to discover these errors. During delivery the tutor may
@@ -47,21 +47,38 @@ namespace DoublyLinkedListWithErrors
             }
         } // end of addToHead
 
-        public void removHead()
+        public void removeHead() //original removHead typo
         {
-            if (this.head == null) return;
-            this.head = this.head.next;
-            this.head.previous = null;
+
+
+
+            if (head == null)
+                return;
+
+            head = head.next;
+            if (head != null)
+            {
+                head.previous = null;
+
+            }
+            else
+            {
+                tail = null;
+            }
         } // removeHead
 
-        public void removeTail()
+        public void removeTail() //original did not remove the tail
         {
             if (this.tail == null) return;
             if (this.head == this.tail)
             {
                 this.head = null;
                 this.tail = null;
-                return;
+            }
+            else
+            {
+                this.tail = this.tail.previous;
+                this.tail.next = null; // Update the next pointer of the new tail to null
             }
         } // remove tail
 
@@ -71,37 +88,48 @@ namespace DoublyLinkedListWithErrors
         public DLLNode search(int num)
         {
             DLLNode p = head;
-            while (p != null)
+            while (p != null) //original code did not handle the p correctly
             {
+                if (p.num == num)
+                    return p;
                 p = p.next;
-                if (p.num == num) break;
             }
-            return (p);
+            return null;
         } // end of search (return pionter to the node);
 
         public void removeNode(DLLNode p)
-        { // removing the node p.
+        {
+            if (p == null)
+            {
+                return; // Handle case where p is null
+            }
 
-            if (p.next == null)
-            {
-                this.tail = this.tail.previous;
-                this.tail.next = null;
-                p.previous = null;
-                return;
+            if (p == this.head && p == this.tail)
+            { // Only node in the list
+                this.head = null;
+                this.tail = null;
             }
-            if (p.previous == null)
-            {
-                this.head = this.head.next;
-                p.next = null;
+            else if (p == this.head)
+            { // Node is head
+                this.head = p.next;
                 this.head.previous = null;
-                return;
             }
-            p.next.previous = p.previous;
-            p.previous.next = p.next;
+            else if (p == this.tail)
+            { // Node is tail
+                this.tail = p.previous;
+                this.tail.next = null;
+            }
+            else
+            { // Node is somewhere in the middle
+                p.next.previous = p.previous;
+                p.previous.next = p.next;
+            }
+
+            // Clear references to avoid dangling references
             p.next = null;
             p.previous = null;
-            return;
-        } // end of remove a node
+        }
+
 
         public int total()
         {
@@ -110,9 +138,10 @@ namespace DoublyLinkedListWithErrors
             while (p != null)
             {
                 tot += p.num;
-                p = p.next.next;
+                p = p.next; // Advance p by one node
             }
-            return (tot);
-        } // end of total
+            return tot;
+        }
+
     } // end of DLList class
 }
