@@ -34,6 +34,8 @@ namespace DoublyLinkedListWithErrors
                     {
                         b = false;
                         break;
+                        //hello how are you doing today
+                        //hello how are you today why aren't you working
                     }
                 }
             }
