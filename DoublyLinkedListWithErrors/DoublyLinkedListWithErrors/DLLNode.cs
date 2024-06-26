@@ -37,6 +37,7 @@ namespace DoublyLinkedListWithErrors
                         //hello how are you doing today
                         //hello how are you today why aren't you working
                         //are you now working
+                        //activate push command
                     }
                 }
             }
